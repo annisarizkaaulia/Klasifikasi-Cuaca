@@ -1,0 +1,222 @@
+{% extends "layout/templateadmin.html" %} {% block content %}
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Form Weather</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{{url_for('datatable')}}">Data Weather</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{{url_for('formdata')}}">Forms Weather</a>
+        </li>
+        <li class="breadcrumb-item active">Form Data Weather</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <a class="btn btn-secondary" href="{{url_for('datatable')}}">
+          <i class="bi bi-backspace"></i> Kembali
+        </a>
+        <!-- <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Upload File Data Weather</h5> -->
+            <!-- Form Data Weather -->
+            <!-- <form action="" method="POST" enctype="multipart/form-data">
+              <div class="row mx-auto">
+                <div class="col-sm-10">
+                  <input
+                    class="form-control mb-3"
+                    type="file"
+                    name="filexls"
+                    id="filexls"
+                  />
+                </div>
+                <div class="col-sm-2">
+                  <input
+                    class="form-control btn btn-primary"
+                    type="submit"
+                    name="upload"
+                    value="Upload"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div> -->
+      </div>
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Form Data Weather</h5>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      {% if category == "success" %}
+                          <div class="alert alert-success">
+                              {{ message }}
+                          </div>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <!-- Form Data Weather -->
+            <form action="{{url_for('predict')}}" method="POST">
+              <div class="row mb-3">
+                <label for="arah_angin" class="col-sm-2 col-form-label"
+                  >Arah angin (˚)</label
+                >
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="arah_angin"
+                    name="arah_angin"
+                    placeholder="Masukkan arah_angin"
+                    value="{{arah_angin}}"
+                  />
+                </div>
+                <label for="kecepatan_angin" class="col-sm-2 col-form-label"
+                  >Kecepatan angin (KT)</label
+                >
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="kecepatan_angin"
+                    name="kecepatan_angin"
+                    placeholder="Masukkan kecepatan_angin"
+                    value="{{kecepatan_angin}}"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="jarak_pandang" class="col-sm-2 col-form-label"
+                  >Jarak pandang (Km)</label
+                >
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="jarak_pandang"
+                    name="jarak_pandang"
+                    placeholder="Masukkan jarak pandang"
+                    value="{{jarak_pandang}}"
+                  />
+                </div>
+                <label for="suhu" class="col-sm-2 col-form-label"
+                  >Suhu (˚)</label
+                >
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="suhu"
+                    name="suhu"
+                    placeholder="Masukkan suhu"
+                    value="{{suhu}}"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="titik_embun" class="col-sm-2 col-form-label"
+                  >Titik embun (˚)</label
+                >
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="titik_embun"
+                    placeholder="Masukkan titik embun"
+                    name="titik_embun"
+                    value="{{titik_embun}}"
+                  />
+                </div>
+                <label for="tekanan_udara" class="col-sm-2 col-form-label"
+                  >Tekanan udara (mb)</label
+                >
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="tekanan_udara"
+                    name="tekanan_udara"
+                    placeholder="Masukkan tekanan udara"
+                    value="{{tekanan_udara}}"
+                  />
+                </div>
+              </div>
+              <div class="col-2 mx-auto mb-4 row">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#basicModal"
+                >
+                  <i class="fa fa-save"></i>
+                  Proses
+                </button>
+              </div>
+              <!-- Basic Modal -->
+              <div class="modal fade" id="basicModal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Notifikasi</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      Apakah anda ingin menyimpan data ini?
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Kembali
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        name="submit"
+                      >
+                        Simpan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Basic Modal-->
+              <div class="mx-auto mb-2 row">
+                <label for="cuaca" class="col-sm-4 mx-auto col-form-label"
+                  >Hasil Klasifikasi Cuaca :</label
+                >
+                <div class="mx-auto col-sm-5">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="hasil"
+                    value="{{cuaca}}"
+                    readonly
+                  />
+                </div>
+              </div>
+            </form>
+            <!-- End Custom Styled Validation -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- End #main -->
+{% endblock %}
